@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title> BOOKS </title>
+<script src="jquery-3.5.1.min.js"></script>
+
+<script>
+ $(() => {
+	$("#id").blur(() => {
+		let input ={ Bookid: $("#id").val()};
+		let connectserver = {
+			data: input,
+			url: "http:localhost:8081/getdetails",
+			type: 'get',
+			dataType: 'json',
+			success: (returndata)=> {
+				if (returndata.Bookid == input.Bookid){
+					$("#result").text("Book ID is found");
+					$("#name").val(returndata.Bookname);
+				$("#price").val(returndata.price);
+			
+			}
+			else if (returndata) {
+				$("#result").text("Book ID not found");
+				$("#id").val(null);
+				$("#name").val(null);
+				$("#price").val(null);
+			
+			}
+		},
+			error: (returndata) => {
+				console.log("Update failed some issue occured");
+
+			}
+		}
+		$.ajax(connectserver);
+	
+ });
+
+
+
+
+$("#update").click(() => {
+
+
+		let input ={ Bookid: $("#id").val(), Bookname: $("#name").val(), Bookprice: $("#price").val()};
+		let connectserver = {
+			data: input,
+			url: "http:localhost:8081/update",
+			type: 'get',
+			dataType: 'json',
+			success: (returndata)=> {
+			console.log("Detils Updated");
+					$("#result").text("Detils Updated");
+					$("#id").val(null);
+					$("#name").val(null);
+				$("#price").val(null);
+			
+			},
+	           error: (returndata) => {
+				console.log("Update failed");
+
+			}
+		}
+		$.ajax(connectserver);
+	
+ });
+
+});
+
+
+
+
+</script>
+</head>
+<body>
+<span> </span>Bookid <input type = "number" min="0" placeholder="Enter id " id="id" , name="Bookid"></span>
+<span id="result">Message(what happened book added or not)</span><br><br>
+<span> Bookname <input type="text" plceholder ="Name" id="name" name="Bookname"></span><br><br>
+
+<span> price <input type="number" min="0"  plceholder ="Price" id="Price" name="Bookprice"></span><br><br>
+<button id ="Update"> Update Book</button>
+
+
+</body>
+
+
+</html>
